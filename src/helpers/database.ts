@@ -1,14 +1,24 @@
-import { Pool } from "pg";
+const user_name = 'postgres';
+const password = '1234';
+const host = 'localhost';
+const port = 5432;
+
 import { Sequelize } from "sequelize";
 
-const sequelize = new Sequelize()
+const sequelize: Sequelize = new Sequelize(
+    'courier_db', 'postgres', '1234', {
+        host: 'localhost',
+        dialect: 'postgres'
+    }
+);
 
-const pool = new Pool({
-    host: 'localhost',
-    user: 'postgres',
-    password: '1234',
-    port: 5432,
-    database: 'courier_db'
-});
-
-export default pool;
+export default sequelize;
+// const sequelize = new Sequelize({
+//     dialect: PostgresDialect,
+//     database: 'courier_db',
+//     user: 'postgres',
+//     password: '1234',
+//     host: 'localhost',
+//     port: 5432,
+//     clientMinMessages: 'notice'
+// })
