@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/controllers/admin.ts","./src/controllers/auth.ts","./src/controllers/error.ts","./src/controllers/shipment.ts","./src/controllers/user.ts","./src/helpers/database.ts","./src/models/admin.ts","./src/models/shipment.ts","./src/models/user.ts"],"errors":true,"version":"5.6.3"}
