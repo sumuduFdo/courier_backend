@@ -4,7 +4,7 @@
 // authentication errors
 
 import { Request, Response, NextFunction } from "express";
-import { ServerResponse } from "../models/server-response";
+import { ServerResponse } from "../helpers/server-response";
 
 export const handle404Error = async (
   req: Request,
@@ -53,9 +53,3 @@ export const handlePermissionError = async (
   };
   res.status(403).send(errorRes);
 };
-
-// export const handleGeneralError = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {};

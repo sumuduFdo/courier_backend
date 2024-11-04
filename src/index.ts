@@ -1,7 +1,6 @@
 import express, { Application, Request, Response } from "express";
 import bodyParser from "body-parser";
 
-import DBPool from "./helpers/database";
 import AdminRoutes from "./routes/admin";
 import AuthRoutes from "./routes/auth";
 import ShipmentRoutes from "./routes/shipment";
@@ -25,13 +24,16 @@ try {
   sequelize
     .authenticate()
     .then(() => {
+      return sequelize.sync();
+    })
+    .then(() => {
       console.log("Database connection established successfully!");
-      console.log('Starting server...')
+      console.log("Starting server...");
       app.listen(port, () => {
-        console.log('Running on Port: ', port);
+        console.log("Running on Port: ", port);
       });
     })
-    .catch((err) => {
+    .catch((err: any) => {
       throw err;
     });
 } catch (err) {

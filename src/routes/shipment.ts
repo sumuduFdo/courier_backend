@@ -8,6 +8,5 @@ router.post('/create-shipment', ShipmentController.createShipment);
 
 // OPTIONAL
 router.get('/shipment/:shipmentID', ShipmentController.getShipmentDetails);
-router.post('/update-shipment', ShipmentController.updateShipment);
 
 export default router;

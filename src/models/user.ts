@@ -1,70 +1,47 @@
-import { Optional } from "sequelize";
 import {
-  Table,
-  Column,
+  CreationOptional,
+  DataTypes,
+  InferAttributes,
+  InferCreationAttributes,
   Model,
-  DataType,
-  ForeignKey,
-  BelongsTo,
-  PrimaryKey,
-  AutoIncrement,
-  NotNull,
-  Unique,
-  AllowNull,
-} from "sequelize-typescript";
+} from "sequelize";
 
-interface UserAttributes {
-  userId: string; // PRIMARY KEY
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  houseNo: string;
-  streetAddress: string;
-  city: string;
-  zipCode: number;
-  createdAt: Date;
-  userType: string;
+import sequelize from "../helpers/database";
+
+class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
+  declare userId: CreationOptional<string>;
+  declare firstName: string;
+  declare lastName: string;
+  declare dateOfBirth: Date;
+  declare email: string;
+  declare phone: string;
+  declare houseNo: string;
+  declare streetAddress: string;
+  declare city: string;
+  declare zipCode: string;
+  declare createdAt: CreationOptional<Date>;
+  declare password: string;
+  declare isAdmin: boolean;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, "userId"> {}
-
-@Table({ modelName: "User", tableName: "Users" })
-class User extends Model<UserAttributes, UserCreationAttributes> {
-  @Column({ type: DataType.STRING, allowNull: false, primaryKey: true })
-  userId!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  firstName!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  lastName!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  @Unique(true)
-  email!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  @Unique(true)
-  phone!: string;
-
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  houseNo!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  streetAddress!: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  city!: string;
-
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  zipcode!: number;
-
-  @Column({ type: DataType.DATE, allowNull: false })
-  createdAt!: Date;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  userType!: string;
-}
+User.init(
+  {
+    userId: { type: DataTypes.UUID,  primaryKey: true, allowNull: false, defaultValue: sequelize.fn('gen_random_uuid') },
+    firstName: { type: DataTypes.STRING, allowNull: false },
+    lastName: { type: DataTypes.STRING, allowNull: false },
+    dateOfBirth: { type: DataTypes.DATE, allowNull: false },
+    email: { type: DataTypes.STRING, allowNull: false, unique: true },
+    phone: { type: DataTypes.STRING, allowNull: false, unique: true },
+    houseNo: { type: DataTypes.STRING, allowNull: false },
+    streetAddress: { type: DataTypes.STRING, allowNull: false },
+    city: { type: DataTypes.STRING, allowNull: false },
+    zipCode: { type: DataTypes.STRING, allowNull: false },
+    createdAt: { type: DataTypes.DATE, allowNull: false },
+    password: { type: DataTypes.STRING, allowNull: false },
+    isAdmin: { type: DataTypes.BOOLEAN, allowNull: false },
+  },
+  { tableName: "users", modelName: "user", updatedAt: false, sequelize }
+);
 
 export default User;
+
