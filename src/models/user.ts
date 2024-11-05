@@ -8,8 +8,10 @@ import {
 
 import sequelize from "../helpers/database";
 
+
+// User Model
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-  declare userId: CreationOptional<string>;
+  declare userId: CreationOptional<string>;    // CreationOptional -> Not required in initialization 
   declare firstName: string;
   declare lastName: string;
   declare dateOfBirth: Date;
@@ -26,7 +28,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
 User.init(
   {
-    userId: { type: DataTypes.UUID,  primaryKey: true, allowNull: false, defaultValue: sequelize.fn('gen_random_uuid') },
+    userId: { type: DataTypes.STRING,  primaryKey: true, allowNull: false, defaultValue: sequelize.fn('gen_random_uuid') },
     firstName: { type: DataTypes.STRING, allowNull: false },
     lastName: { type: DataTypes.STRING, allowNull: false },
     dateOfBirth: { type: DataTypes.DATE, allowNull: false },

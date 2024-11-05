@@ -18,30 +18,24 @@ class Shipment extends Model<
   declare recipientName: string;
   declare recipientAddress: string;
   declare weight: number;
-  declare height: number;
-  declare length: number;
-  declare width: number;
   declare shipmentType: string;
   declare deliveryType: string;
   declare createdAt: CreationOptional<Date>;
-  declare shipmentStatus: number;
+  declare shipmentStatus: string;
   declare lastUpdated: Date;
 }
 
 Shipment.init(
   {
-    id: { type: DataTypes.UUID, primaryKey: true, allowNull: false, defaultValue: sequelize.fn('gen_random_uuid') },
+    id: { type: DataTypes.STRING, primaryKey: true, allowNull: false, defaultValue: sequelize.fn('gen_random_uuid') },
     trackingNumber: { type: DataTypes.STRING, allowNull: false },
     recipientName: { type: DataTypes.STRING, allowNull: false },
     recipientAddress: { type: DataTypes.STRING, allowNull: false },
     weight: { type: DataTypes.FLOAT, allowNull: false },
-    height: { type: DataTypes.FLOAT, allowNull: false },
-    length: { type: DataTypes.FLOAT, allowNull: false },
-    width: { type: DataTypes.FLOAT, allowNull: false },
     shipmentType: { type: DataTypes.STRING, allowNull: false },
     deliveryType: { type: DataTypes.STRING, allowNull: false },
     createdAt: { type: DataTypes.DATE, allowNull: false },
-    shipmentStatus: {type: DataTypes.INTEGER, allowNull: false},
+    shipmentStatus: {type: DataTypes.STRING, allowNull: false},
     lastUpdated: { type: DataTypes.DATE, allowNull: false },
   },
   { tableName: "shipments", modelName: "shipment", createdAt: true, updatedAt: false, sequelize }
