@@ -15,7 +15,19 @@ export const getShipments = async (
   let shipments;
 
   try {
-    shipments = await Shipment.findAll({ where: { userId: userId } });
+    shipments = await Shipment.findAll({
+      where: { userId: userId },
+      attributes: [
+        "id",
+        "recipientName",
+        "recipientAddress",
+        "weight",
+        "shipmentType",
+        "deliveryType",
+        "trackingNumber",
+        "shipmentStatus",
+      ],
+    });
   } catch (err) {
     console.log(`[ERROR] ${err}`);
     const error = new HttpError(500, "Failed to retrieve shipments");
@@ -108,6 +120,15 @@ export const createShipment = async (
     return next(error);
   }
 
-  response = { error: null, data: { shipmentId: shipmentCreateResult?.id } };
+  response = { error: null, data: {
+    id: shipmentCreateResult.id,
+    recipientName: shipmentCreateResult.recipientName,
+    recipientAddress: shipmentCreateResult.recipientAddress,
+    weight: shipmentCreateResult.weight,
+    shipmentType: shipmentCreateResult.shipmentType,
+    deliveryType: shipmentCreateResult.deliveryType,
+    trackingNumber: shipmentCreateResult.trackingNumber,
+    shipmentStatus: shipmentCreateResult.shipmentStatus
+  }};
   res.status(201).json(response);
 };
