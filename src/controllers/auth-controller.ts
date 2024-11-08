@@ -141,12 +141,13 @@ export const login = async (
   if (!user) {
     const error = new HttpError(
       404,
-      "User not found. Please register new user."
+      "Incorrect username"
     );
     return next(error);
   }
 
   /** validate user password with the compare() method*/
+
   try {
     const userId = user?.userId;
     const adminStatus = user?.isAdmin;
@@ -175,7 +176,7 @@ export const login = async (
     );
   } catch (err) {
     console.log(`[ERROR] ${err}`);
-    const error = new HttpError(500, "User registration failed");
+    const error = new HttpError(500, "User login failed");
     return next(error);
   }
 
