@@ -9,5 +9,6 @@ router.use(validateUser)
 router.get('/shipments', ShipmentController.getShipments);
 router.get('/shipments/:shipmentID', ShipmentController.getShipmentDetails);
 router.post('/create-shipment', ShipmentController.createShipment);
+router.post('/update-shipment', ShipmentController.updateShipmentStatus)
 
 export default router;
