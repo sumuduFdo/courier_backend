@@ -95,7 +95,10 @@ export const register = async (
     return next(error);
   }
 
-  response = { error: null, data: { userId: newUser?.userId, token: token } };
+  response = {
+    error: null,
+    data: { userId: newUser?.userId, token: token, isAdmin: newUser?.isAdmin },
+  };
   res.status(201).json(response);
 };
 
@@ -166,7 +169,7 @@ export const login = async (
   try {
     const userId = user?.userId;
     token = jwt.sign(
-      { userId: user?.userId, email: user?.email },
+      { userId: user?.userId, email: user?.email, isAdmin: user?.isAdmin },
       "baby-shark-doo-doo-doo-doo",
       { expiresIn: "1h" }
     );
@@ -178,7 +181,10 @@ export const login = async (
 
   res
     .status(200)
-    .json({ error: null, data: { userId: user?.userId, token: token } });
+    .json({
+      error: null,
+      data: { userId: user?.userId, token: token, isAdmin: user?.isAdmin },
+    });
 };
 
 const getDateOfBirth = function (
