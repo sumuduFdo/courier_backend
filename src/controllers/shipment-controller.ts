@@ -14,20 +14,30 @@ export const getShipments = async (
   let response: HttpResponse;
   let shipments;
 
+  const attributes = [
+    "id",
+    "recipientName",
+    "recipientAddress",
+    "weight",
+    "shipmentType",
+    "deliveryType",
+    "trackingNumber",
+    "shipmentStatus",
+  ];
+  const admin = req.isAdmin;
+
   try {
-    shipments = await Shipment.findAll({
-      where: { userId: userId },
-      attributes: [
-        "id",
-        "recipientName",
-        "recipientAddress",
-        "weight",
-        "shipmentType",
-        "deliveryType",
-        "trackingNumber",
-        "shipmentStatus",
-      ],
-    });
+    if(admin) {
+      shipments = await Shipment.findAll({
+        attributes: attributes
+      });
+    } else {
+      shipments = await Shipment.findAll({
+        where: { userId: userId },
+        attributes: attributes
+      });
+    }
+   
   } catch (err) {
     console.log(`[ERROR] ${err}`);
     const error = new HttpError(500, "Failed to retrieve shipments");
