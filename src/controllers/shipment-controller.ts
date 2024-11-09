@@ -45,7 +45,7 @@ export const getShipmentDetails = async (
 ): Promise<any> => {
   let response: HttpResponse;
   let shipment;
-  const shipmentId = req.params.shipmentId; // retireve shipmentId from route parameters
+  const shipmentId = req.params.shipmentID; // retireve shipmentId from route parameters
 
   try {
     shipment = await Shipment.findByPk(shipmentId);
@@ -59,7 +59,6 @@ export const getShipmentDetails = async (
     const error = new HttpError(500, "Failed to retrieve shipments details");
     return next(error);
   }
-
   response = { error: null, data: shipment };
   res.status(200).json(response);
 };
@@ -120,15 +119,58 @@ export const createShipment = async (
     return next(error);
   }
 
-  response = { error: null, data: {
-    id: shipmentCreateResult.id,
-    recipientName: shipmentCreateResult.recipientName,
-    recipientAddress: shipmentCreateResult.recipientAddress,
-    weight: shipmentCreateResult.weight,
-    shipmentType: shipmentCreateResult.shipmentType,
-    deliveryType: shipmentCreateResult.deliveryType,
-    trackingNumber: shipmentCreateResult.trackingNumber,
-    shipmentStatus: shipmentCreateResult.shipmentStatus
-  }};
+  response = {
+    error: null,
+    data: {
+      id: shipmentCreateResult.id,
+      recipientName: shipmentCreateResult.recipientName,
+      recipientAddress: shipmentCreateResult.recipientAddress,
+      weight: shipmentCreateResult.weight,
+      shipmentType: shipmentCreateResult.shipmentType,
+      deliveryType: shipmentCreateResult.deliveryType,
+      trackingNumber: shipmentCreateResult.trackingNumber,
+      shipmentStatus: shipmentCreateResult.shipmentStatus,
+    },
+  };
   res.status(201).json(response);
+};
+
+export const updateShipmentStatus = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const id: string = req.body.shipmentId;
+  const newStatus: string = req.body.updatedStatus;
+  let response: HttpResponse;
+  let shipment;
+  let saveResult;
+
+  try {
+    shipment = await Shipment.findByPk(id);
+  } catch (err) {
+    console.log(`[ERROR] ${err}`);
+    const error = new HttpError(500, "Failed to update shipment status");
+    return next(error);
+  }
+
+  if (!shipment) {
+    const error = new HttpError(500, "Failed to update shipment status");
+    return next(error);
+  }
+
+  shipment.shipmentStatus = newStatus;
+  try {
+    saveResult = await shipment.save();
+  } catch (err) {
+    console.log(`[ERROR] ${err}`);
+    const error = new HttpError(500, "Failed to update shipment status");
+    return next(error);
+  }
+
+  response = {
+    error: null,
+    data: { shipmentId: shipment?.id, shipmentStatus: newStatus },
+  };
+  res.json(response);
 };
